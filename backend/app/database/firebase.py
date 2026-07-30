@@ -21,14 +21,23 @@ def initialize_firebase() -> None:
         return
 
     try:
-        # Default initialization relies on GOOGLE_APPLICATION_CREDENTIALS in env
+        import json
+        
+        # Check if running on Render with the JSON string injected directly
+        credentials_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
         cred_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-        if cred_path:
+        
+        if credentials_json:
+            logger.info("Initializing Firebase using FIREBASE_CREDENTIALS_JSON environment variable")
+            cred_dict = json.loads(credentials_json)
+            cred = credentials.Certificate(cred_dict)
+            firebase_admin.initialize_app(cred)
+        elif cred_path:
             logger.info(f"Initializing Firebase with credentials from {cred_path}")
             cred = credentials.Certificate(cred_path)
             firebase_admin.initialize_app(cred)
         else:
-            logger.warning("GOOGLE_APPLICATION_CREDENTIALS not set. Attempting default initialization (works in GCP environments).")
+            logger.warning("No credentials found. Attempting default initialization.")
             firebase_admin.initialize_app()
             
         logger.info("Successfully initialized Firebase Admin SDK.")
