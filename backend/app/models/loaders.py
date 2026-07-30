@@ -36,8 +36,8 @@ class ModelLoader:
             model_path = base_dir / "pothole" / "best.pt"
             
             if not model_path.exists():
-                logger.error(f"Pothole model weights not found at: {model_path}")
-                raise FileNotFoundError(f"Missing model weights at {model_path}")
+                logger.warning(f"Pothole model weights not found at: {model_path}. Running in MOCK mode.")
+                return None
                 
             try:
                 logger.info(f"Loading YOLOv8 pothole model from {model_path}...")
