@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+huggingface_hub
+python-dotenv
+firebase-admin
+ultralytics
+opencv-python
+pillow
+numpy

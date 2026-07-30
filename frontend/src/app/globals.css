@@ -1,0 +1,75 @@
+:root {
+  --background: #0d1117;
+  --foreground: #c9d1d9;
+  --primary: #58a6ff;
+  --primary-glow: rgba(88, 166, 255, 0.4);
+  --accent: #ff7b72;
+  --glass-bg: rgba(22, 27, 34, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --success: #3fb950;
+  --warning: #d29922;
+  --danger: #f85149;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.neon-btn {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.neon-btn:hover {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.neon-btn.accent {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.neon-btn.accent:hover {
+  background: var(--accent);
+  box-shadow: 0 0 15px rgba(255, 123, 114, 0.4);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 20px 0;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 8px var(--primary-glow);
+}

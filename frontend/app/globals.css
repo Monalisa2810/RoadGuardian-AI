@@ -1,0 +1,128 @@
+:root {
+  --background: #0a0a0f;
+  --foreground: #ffffff;
+  --primary: #00f0ff;
+  --primary-glow: rgba(0, 240, 255, 0.6);
+  --accent: #ff0055;
+  --accent-glow: rgba(255, 0, 85, 0.6);
+  --glass-bg: rgba(20, 20, 30, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --success: #00ff88;
+  --warning: #ffaa00;
+  --danger: #ff0033;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.08), transparent 25%),
+              radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.08), transparent 25%),
+              var(--background);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Optional animated scanning line effect for the background */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.02) 51%, transparent 51%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle glow behind the panel */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; right: -50%; bottom: -50%;
+  background: conic-gradient(transparent, rgba(0, 240, 255, 0.1), transparent 30%);
+  animation: rotate 10s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+.neon-btn {
+  background: rgba(0, 240, 255, 0.05);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+.neon-btn:hover {
+  background: var(--primary);
+  color: #000;
+  box-shadow: 0 0 20px var(--primary-glow), 0 0 40px var(--primary-glow);
+  transform: translateY(-2px);
+}
+
+.neon-btn.accent {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(255, 0, 85, 0.05);
+  box-shadow: 0 0 10px rgba(255, 0, 85, 0.1);
+}
+
+.neon-btn.accent:hover {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+}
+
+input, select {
+  width: 100%;
+  padding: 14px 16px;
+  margin: 10px 0 24px 0;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+a {
+  text-decoration: none;
+  transition: text-shadow 0.3s ease;
+}
+a:hover {
+  text-shadow: 0 0 8px currentColor;
+}
