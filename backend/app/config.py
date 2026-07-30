@@ -17,7 +17,7 @@ class Settings:
     """
     def __init__(self) -> None:
         self.hf_token: str | None = os.getenv("HF_TOKEN")
-        self.gemma_model: str | None = os.getenv("GEMMA_MODEL")
+        self.gemma_model: str = os.getenv("GEMMA_MODEL", "google/gemma-3-4b-it")
         
         self._validate()
         
@@ -30,8 +30,6 @@ class Settings:
         """
         if not self.hf_token:
             raise ValueError("Missing required environment variable: HF_TOKEN")
-        if not self.gemma_model:
-            raise ValueError("Missing required environment variable: GEMMA_MODEL")
 
 # Export a singleton instance
 settings = Settings()
