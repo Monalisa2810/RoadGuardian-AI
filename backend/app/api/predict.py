@@ -57,32 +57,43 @@ async def predict_incident(
     
     try:
         import uuid
+        from firebase_admin import storage
+        from app.database.firebase import get_firestore
+        import datetime
+        
         ext = os.path.splitext(file.filename)[1] if file.filename else ".jpg"
-        # Default to .mp4 if it's a blob and looks like video
         if file.content_type and "video" in file.content_type and ext == "":
             ext = ".mp4"
         elif ext == "":
             ext = ".jpg"
             
-        filename = f"{uuid.uuid4()}{ext}"
-        upload_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "frontend", "public", "uploads"))
-        os.makedirs(upload_dir, exist_ok=True)
-        public_path = os.path.join(upload_dir, filename)
-        
+        filename = f"incidents/{uuid.uuid4()}{ext}"
         contents = await file.read()
-        with open(public_path, 'wb') as f:
+        
+        # Upload to Firebase Storage
+        bucket = storage.bucket()
+        blob = bucket.blob(filename)
+        blob.upload_from_string(contents, content_type=file.content_type or 'image/jpeg')
+        blob.make_public()
+        public_url = blob.public_url
+        
+        # Save temp file just for the AI agent to analyze it
+        fd, temp_path = tempfile.mkstemp(suffix=ext)
+        with os.fdopen(fd, 'wb') as f:
             f.write(contents)
             
         final_report = await orchestrator.process_incident(
-            image_source=public_path,
+            image_source=temp_path,
             user_id=user_id,
             latitude=latitude,
             longitude=longitude
         )
         
-        # Inject media URL so Admin Dashboard can display it
-        media_url = f"/uploads/{filename}"
-        from app.database.firebase import get_firestore
+        # Clean up temp file
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        
+        media_url = public_url
         db = get_firestore()
         if "report_id" in final_report and db:
             db.collection("reports").document(final_report["report_id"]).update({"media_url": media_url})

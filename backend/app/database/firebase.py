@@ -27,18 +27,21 @@ def initialize_firebase() -> None:
         credentials_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
         cred_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
         
+        
+        bucket_name = "roadguardianai-b8e4f.firebasestorage.app"
+        
         if credentials_json:
             logger.info("Initializing Firebase using FIREBASE_CREDENTIALS_JSON environment variable")
             cred_dict = json.loads(credentials_json)
             cred = credentials.Certificate(cred_dict)
-            firebase_admin.initialize_app(cred)
+            firebase_admin.initialize_app(cred, {"storageBucket": bucket_name})
         elif cred_path:
             logger.info(f"Initializing Firebase with credentials from {cred_path}")
             cred = credentials.Certificate(cred_path)
-            firebase_admin.initialize_app(cred)
+            firebase_admin.initialize_app(cred, {"storageBucket": bucket_name})
         else:
             logger.warning("No credentials found. Attempting default initialization.")
-            firebase_admin.initialize_app()
+            firebase_admin.initialize_app(None, {"storageBucket": bucket_name})
             
         logger.info("Successfully initialized Firebase Admin SDK.")
         
